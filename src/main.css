@@ -1,0 +1,157 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+/* /////  LIGHT */
+[data-theme="light"] {
+  .my-background {
+    background-color: #fbf7f7;
+    border-color: orange;
+  }
+
+  .bg-notifi {
+    background-image: radial-gradient(
+        circle at 16% 83%,
+        rgba(148, 148, 148, 0.06) 0%,
+        rgba(148, 148, 148, 0.06) 50%,
+        rgba(63, 63, 63, 0.06) 50%,
+        rgba(63, 63, 63, 0.06) 100%
+      ),
+      radial-gradient(
+        circle at 68% 87%,
+        rgb(255, 255, 255) 0%,
+        rgb(255, 255, 255) 50%,
+        rgba(105, 105, 105, 0.06) 50%,
+        rgba(105, 105, 105, 0.06) 100%
+      ),
+      radial-gradient(
+        circle at 38% 50%,
+        rgb(255, 255, 255) 0%,
+        rgb(255, 255, 255) 50%,
+        rgb(255, 255, 255) 50%,
+        rgb(255, 255, 255) 100%
+      ),
+      linear-gradient(90deg, rgb(236, 242, 247), rgb(236, 242, 247));
+
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  /*
+  .all {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 61%,
+      rgba(5, 90, 246, 1) 88%,
+      rgba(5, 90, 246, 1) 100%
+    );
+  }
+
+  .active {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 61%,
+      rgba(246, 127, 5, 0.5629901618850666) 88%,
+      rgba(246, 127, 5, 1) 100%
+    );
+  }
+  .debtor {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 60%,
+      rgba(246, 62, 5, 1) 88%,
+      rgba(246, 62, 5, 1) 100%
+    );
+  }
+  .recovered {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 1) 61%,
+      rgba(5, 246, 62, 1) 88%,
+      rgba(5, 246, 62, 1) 100%
+    );
+  } */
+}
+
+/* ////DARK///// */
+[data-theme="dark"] {
+  .my-background {
+    background-color: #0c0e10;
+    border-color: #1ea1f1;
+  }
+  .bg-notifi {
+    background-image: radial-gradient(
+        circle at 16% 83%,
+        rgba(148, 148, 148, 0.06) 0%,
+        rgba(148, 148, 148, 0.06) 50%,
+        rgba(63, 63, 63, 0.06) 50%,
+        rgba(63, 63, 63, 0.06) 100%
+      ),
+      radial-gradient(
+        circle at 68% 87%,
+        rgb(30, 30, 41) 0%,
+        rgb(30, 30, 41) 50%,
+        rgba(105, 105, 105, 0.06) 50%,
+        rgba(105, 105, 105, 0.06) 100%
+      ),
+      radial-gradient(
+        circle at 38% 50%,
+        rgb(30, 30, 41) 0%,
+        rgb(30, 30, 41) 50%,
+        rgb(30, 30, 41) 50%,
+        rgb(30, 30, 41) 100%
+      ),
+      linear-gradient(90deg, rgb(29, 35, 42), rgb(29, 35, 42));
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .all {
+    background: rgb(3, 27, 31);
+    background: linear-gradient(
+      90deg,
+      rgba(3, 27, 31, 1) 0%,
+      rgba(25, 25, 33, 1) 64%,
+      rgba(24, 24, 247, 1) 100%
+    );
+  }
+
+  .debtor {
+    background: rgb(3, 27, 31);
+    background: linear-gradient(
+      90deg,
+      rgba(3, 27, 31, 1) 0%,
+      rgba(25, 25, 33, 1) 64%,
+      rgba(239, 68, 68, 1) 100%
+    );
+  }
+
+  .recovered {
+    background: rgb(3, 27, 31);
+    background: linear-gradient(
+      90deg,
+      rgba(3, 27, 31, 1) 0%,
+      rgba(25, 25, 33, 1) 64%,
+      rgba(4, 177, 7, 1) 100%
+    );
+  }
+
+  .active {
+    background: rgb(3, 27, 31);
+    background: linear-gradient(
+      90deg,
+      rgba(3, 27, 31, 1) 0%,
+      rgba(3, 27, 31, 0.9915615904564951) 64%,
+      rgba(246, 127, 5, 1) 100%
+    );
+  }
+}
+/* ////////DARK END */
+
+.custom-capitalized::first-letter {
+  text-transform: uppercase;
+}
