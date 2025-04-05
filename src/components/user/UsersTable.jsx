@@ -95,7 +95,7 @@ const UsersTable = ({ apiData }) => {
                         : "bg-yellow-500 text-red-100"
                       }`}
                   >
-                    {user.status == "debtor" ? "qarizdor" : user.status === "treated" ? "davolangan" : "to'langan"}
+                    {user.status == "debtor" ? "qarzdor" : user.status === "treated" ? "davolangan" : "to'langan"}
                   </span>
                 </td>
 

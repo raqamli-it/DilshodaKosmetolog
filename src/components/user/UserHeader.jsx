@@ -92,7 +92,7 @@ const UserHeader = ({ apiData }) => {
 
             <div className=" w-full flex justify-center ">
               <div className={`text-white  rounded-3xl py-1 px-10 ${apiData?.status == "debtor" ? "bg-red-500" : apiData?.status == "treated" ? "bg-green-500" : "bg-yellow-500"}`}>
-                {apiData?.status == "debtor" ? "Qarizdor" : apiData?.status == "treated" ? "Sog'aygan" : "Fa'ol"}
+                {apiData?.status == "debtor" ? "Qarzdor" : apiData?.status == "treated" ? "Sog'aygan" : "Fa'ol"}
 
               </div>
             </div>
@@ -115,7 +115,7 @@ const UserHeader = ({ apiData }) => {
             >
               <ul className="mt-5 flex flex-col w-full gap-2">
                 {apiData?.appointments?.map((item) =>
-                  <li key={item?.id} className="text-base-content flex items-start justify-between px-2 gap-2 text-right"><span className="flex font-bold items-center gap-2"><Calendar size={16} /> Tshrif vaqti:</span> {formatDate(item?.appointment_time)}</li>
+                  <li key={item?.id} className="text-base-content flex items-start justify-between px-2 gap-2 text-right"><span className="flex font-bold items-center gap-2"><Calendar size={16} /> Tashrif vaqti:</span> {formatDate(item?.appointment_time)}</li>
 
                 )}
               </ul>
@@ -129,8 +129,8 @@ const UserHeader = ({ apiData }) => {
 
               <ul>
                 <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> Umumiy miqdor:</span> {apiData?.total_payment_due} so'm</li>
-                <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> To'langan qisim:</span> {apiData?.total_paid} so'm</li>
-                <li className={`${apiData?.remaining_debt < 0 ? "text-red-500" : "text-base-content"} text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center gap-2 font-bold"> To'lanmagan qisim:</span> {apiData?.remaining_debt} so'm</li>
+                <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> To'langan qism:</span> {apiData?.total_paid} so'm</li>
+                <li className={`${apiData?.remaining_debt < 0 ? "text-red-500" : "text-base-content"} text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center gap-2 font-bold"> To'lanmagan qism:</span> {apiData?.remaining_debt} so'm</li>
 
               </ul>
               <PaymentForm id={apiData?.id} />

@@ -116,7 +116,7 @@ const DebtorUser = () => {
           transition={{ delay: 0.2 }}
         >
           <div className="flex justify-between items-center mb-6 px-6">
-            <Bredcamp title={"Qarizdor mijozlar"} />
+            <Bredcamp title={"Qarzdor mijozlar"} />
             <div className="relative">
               <input
                 type="text"

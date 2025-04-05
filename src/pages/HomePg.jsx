@@ -157,7 +157,7 @@ const HomePage = () => {
           />
           <StatCard name="Fa'ol mijozlar" icon={UserCheck} value={apiDataSt?.paid} color='#f67f05' bgColor={"active"} />
           <StatCard
-            name="Qarizdor mijozlar"
+            name="Qarzdor mijozlar"
             icon={UserMinus}
             value={apiDataSt?.debtor}
             color='#EF4444'
