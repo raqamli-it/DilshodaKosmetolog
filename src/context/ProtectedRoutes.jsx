@@ -7,7 +7,7 @@ export default function ProtectedRoutes({ children }) {
   const { user } = useContext(GlobalContext); // Login holatini olish
   const token = localStorage.getItem("authToken");
   if (token || user) {
-    console.log(user, "bu protect useri");
+    // console.log(user, token, "bu protect useri");
 
     return children;
   }

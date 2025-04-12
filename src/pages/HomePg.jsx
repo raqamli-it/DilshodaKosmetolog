@@ -1,4 +1,5 @@
-import { UserCheck, UserPlus, UsersIcon, UserRound, UserMinus, Search } from "lucide-react";
+import { UserCheck, UserPlus, UsersIcon, UserRound, UserMinus, Search, ArrowDownRightSquare } from "lucide-react";
+
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
@@ -7,18 +8,22 @@ import Bredcamp from "../components/Bredcamp";
 import { endpoints } from "../config/endpoinds";
 import { DataService } from "../config/DataService";
 import UsersTable from "../components/user/UsersTable";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [apiDataSt, setApiDataSt] = useState();
   const fetchDataSt = async () => {
     const response = await DataService.get(endpoints.statistic)
     console.log(response, "statistic");
     setApiDataSt(response);
-    console.log(response?.results);
+    // console.log(response?.results);
 
   };
   useEffect(() => {
     fetchDataSt();
+    // console.log(apiDataSt, "statistic useEffect");
+
   }, []);
   const [apiData, setApiData] = useState([]); // API dan kelgan data
   const [searchTerm, setSearchTerm] = useState(""); // Qidiruv so'rovi
@@ -55,6 +60,7 @@ const HomePage = () => {
       const endpoint = `${endpoints.all}?search=${searchQuery}&page=${page}`;
       const response = await DataService.get(endpoint);
 
+
       // API ma'lumotlarini saqlash
       setApiData(response?.results || []);
       setTotalCount(response?.count || 0); // Umumiy ma'lumotlar soni
@@ -63,6 +69,7 @@ const HomePage = () => {
       setSearchCompleted(true); // Qidiruv tugallanganligini belgilash
       sessionStorage.setItem("currentPage", page);
       sessionStorage.setItem("searchTerm", searchQuery);
+
       for (let i = 0; i < sessionStorage.length; i++) {
         const key = sessionStorage.key(i); // i-index bo'yicha kalitni olish
 
@@ -78,8 +85,17 @@ const HomePage = () => {
 
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.code === "token_not_valid") {
+        localStorage.removeItem('authToken'); // Tokenni o'chirish
+        sessionStorage.clear(); // sessionStorage'dagi barcha ma'lumotlarni o'chirish
+        window.location.href = '/login';
+      }
+
+      // navigate("/login"); // Agar xato bo'lsa, login sahifasiga o'tish
     } finally {
       setLoading(false); // Yuklanish jarayoni tugadi
+      console.log("loading", response?.message);
+
     }
   };
   // Boshlang'ich ma'lumotlarni olish

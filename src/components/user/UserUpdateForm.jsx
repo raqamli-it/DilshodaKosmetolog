@@ -9,6 +9,7 @@ import { endpoints } from "../../config/endpoinds";
 import { useNavigate } from "react-router-dom";
 
 const UserUpdateForm = ({ id }) => {
+  // const arr = []
   const navigate = useNavigate();
   const [pato, setPato] = useState()
   const [apiData, setApiData] = useState([]);
@@ -23,20 +24,54 @@ const UserUpdateForm = ({ id }) => {
     home_care_items: apiData?.home_care_items,
     total_payment_due: apiData?.total_payment_due,
     photo: "",
+    remove: [],
     new_appointments: [{ appointment_time: "" }],
+    appointments: apiData?.appointments
+
+
   });
   const fetchData = async () => {
     const response = await DataService.get(endpoints.patientByid(id));
     console.log(response, "havolalar user details update");
     setApiData(response);
-    // console.log(response?.results);
-    response?.appointments?.forEach((item) => {
-      console.log(response?.appointments[0].appointment_time, "update");
+    console.log(response?.photo, "update");
+    // response?.appointments?.forEach((item) => {
+    //   console.log(response?.appointments[0].appointment_time, "update");
 
-    })
+    // })
   };
+
+  const FetchPhotoFomat = async () => {
+    if (!selectedFile) {
+      try {
+        const response = await fetch(apiData?.photo); // URL'dan rasmni olish
+        const blob = await response.blob(); // Blob formatda rasmni olish
+
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob); // Blob'ni base64 ga aylantirish
+          reader.onloadend = () => {
+            resolve(reader.result)
+            // console.log("Base64 format:", reader.result);
+            setFormData((prev) => ({ ...prev, photo: reader.result })); // Base64 formatni qaytarish
+          }; // Base64 formatni qaytarish
+          reader.onerror = reject; // Agar xato bo'lsa
+        });
+      } catch (error) {
+        console.error('Xatolik yuz berdi:', error);
+      }
+
+      // Misol foydalanish
+      // (async () => {
+      //   const base64Image = await urlToBase64('https://your-image-url.com/image.jpg');
+      //   // console.log('Base64 format:', base64Image);
+      // })();
+
+    }
+  }
   useEffect(() => {
     fetchData();
+    FetchPhotoFomat();
     setFormData({
       full_name: apiData?.full_name,
       phone_number: apiData?.phone_number,
@@ -48,13 +83,20 @@ const UserUpdateForm = ({ id }) => {
       home_care_items: apiData?.home_care_items,
       total_payment_due: apiData?.total_payment_due,
       photo: "",
+      remove: [],
+
       new_appointments: [{ appointment_time: "" }],
+      appointments: apiData?.appointments
+
+
     })
     setBoolen({ ...boolens, region_name: apiData?.region?.name ? apiData?.region?.name : "Viloyat", type_name: apiData?.type_disease?.name ? apiData?.type_disease?.name : "Turi" });
 
 
   }, [id]);
   useEffect(() => {
+    FetchPhotoFomat();
+
     if (apiData) {
       setFormData({
         full_name: apiData.full_name || "",
@@ -67,7 +109,10 @@ const UserUpdateForm = ({ id }) => {
         home_care_items: apiData.home_care_items || "",
         total_payment_due: apiData.total_payment_due || 0,
         photo: "",
+        remove: [],
         new_appointments: [{ appointment_time: "" }],
+        appointments: apiData?.appointments,
+
 
       });
       setBoolen({ ...boolens, region_name: apiData?.region?.name ? apiData?.region?.name : "Viloyat", type_name: apiData?.type_disease?.name ? apiData?.type_disease?.name : "Turi" });
@@ -87,50 +132,61 @@ const UserUpdateForm = ({ id }) => {
   const [images, setImages] = useState("")
 
   const handleChange = (e) => {
+    const totalPayment = formData?.total_payment_due; // To'lov summasini olamiz
+
+    if (totalPayment && totalPayment.toString().length > 8) {
+      toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
+    }
+
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setPato(file)
     if (file) {
-      console.log("Tanlangan fayl:", file); // Fayl obyektini log qilish
-      console.log("Fayl turi:", file.type);
-      console.log("Fayl nomi:", file.name);
+      setImages(file)
+      setSelectedFile(file);
+      const reader = new FileReader();
 
-      setFormData((prev) => ({ ...prev, photo: file }));
+      // Faylni o'qish jarayonida nimani qilish kerakligini aniqlash
+      reader.onload = () => {
+        const base64String = reader.result.split(",")[1]; // Base64 stringni olish
+        console.log("Base64 format:", base64String);
+
+        // Base64ni formData ga qo'shish
+        setFormData((prev) => ({ ...prev, photo: base64String }));
+      };
+
+      // Faylni o'qish jarayonini boshlash
+      reader.readAsDataURL(file);
     } else {
-      // setFormData((prev) => ({ ...prev, photo: apiData?.photo }));
+      toast.error("Fayl tanlanmagan!");
     }
   };
 
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setImages(file)
-
-  //     const reader = new FileReader();
-
-  //     // Faylni o'qish jarayonida nimani qilish kerakligini aniqlash
-  //     reader.onload = () => {
-  //       const base64String = reader.result.split(",")[1]; // Base64 stringni olish
-  //       console.log("Base64 format:", base64String);
-
-  //       // Base64ni formData ga qo'shish
-  //       setFormData((prev) => ({ ...prev, photo: base64String }));
-  //     };
-
-  //     // Faylni o'qish jarayonini boshlash
-  //     reader.readAsDataURL(file);
-  //   } else {
-  //     console.error("Fayl tanlanmagan!");
-  //   }
-  // };
   const handleAppointmentChange = (index, value) => {
     const updatedAppointments = [...formData.new_appointments];
     updatedAppointments[index].appointment_time = value;
     setFormData((prev) => ({ ...prev, new_appointments: updatedAppointments }));
+    setFormData((prev) => ({
+      ...prev,
+      new_appointments: prev.new_appointments.filter((item) => {
+        // Bo'sh sanani o‘chiramiz
+
+
+        // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
+        const date = new Date(item.appointment_time);
+        const currentDate = new Date();
+        if (date < currentDate) {
+          toast.error("Vaqtni to'g'ri tanlang!");
+          // Massivdan olib tashlash
+        }
+
+        return true; // To'g'ri sanalar saqlanadi
+      }),
+    }));
   };
 
   const addAppointment = () => {
@@ -144,9 +200,59 @@ const UserUpdateForm = ({ id }) => {
     const updatedAppointments = formData.new_appointments.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, new_appointments: updatedAppointments }));
   };
+  // const removeAppointmentOld = (index, id) => {
+  //   // Massivni prevState asosida yangilash
 
+
+  //   // Appointmentsni yangilash
+  //   const updatedAppointments = apiData.appointments.filter((_, i) => i !== index);
+  //   setApiData((prev) => ({ ...prev, appointments: updatedAppointments }));
+  //   console.log(formData?.remove, "remove id");
+
+  // };
+
+  const removeAppointmentOld = (index) => {
+    const updatedAppointments = [...formData?.appointments];
+    const removedItem = updatedAppointments.splice(index, 1)[0];
+
+    setFormData(prev => ({
+      ...prev,
+      appointments: updatedAppointments,
+      remove: [...prev.remove, removedItem.id] // id qo‘shilyapti!
+    }));
+  };
+
+
+
+  const dateControl = () => {
+
+    setFormData((prev) => ({
+      ...prev,
+      new_appointments: prev.new_appointments.filter((item) => {
+        // Bo'sh sanani o‘chiramiz
+        if (!item?.appointment_time || item?.appointment_time.trim() === "") {
+          toast.error("Sanani tanlash kerak!");
+          return false; // Massivdan olib tashlash
+        }
+
+        // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
+        const date = new Date(item.appointment_time);
+        const currentDate = new Date();
+        if (date < currentDate) {
+          toast.error("Vaqtni to'g'ri tanlang!");
+          return false; // Massivdan olib tashlash
+        }
+
+        return true; // To'g'ri sanalar saqlanadi
+      }),
+    }));
+  };
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+    FetchPhotoFomat();
+
+
     const token = localStorage.getItem("authToken");
 
     if (!token) {
@@ -178,7 +284,9 @@ const UserUpdateForm = ({ id }) => {
 
       const result = await response.json();
       toast.success("Ma'lumot muvaffaqiyatli yuborildi!");
-      // navigate(`/details/${id}`)
+      console.log(result, "result update user");
+
+      navigate(`/details/${id}`)
 
     } catch (error) {
       toast.error("Yuborishda xatolik yuz berdi");
@@ -205,6 +313,8 @@ const UserUpdateForm = ({ id }) => {
       total_payment_due: apiData?.total_payment_due,
       photo: "",
       new_appointments: [{ appointment_time: "" }],
+      appointments: apiData?.appointments,
+      remove: [],
 
     })
     // setFormData({ ...formData, region: apiData?.region?.id ? apiData?.region?.id : "", type_disease: apiData?.type_disease?.id ? apiData?.type_disease?.id : "" })
@@ -214,7 +324,11 @@ const UserUpdateForm = ({ id }) => {
 
   }, [id]);
 
+  useEffect(() => {
+    console.log(formData?.remove, "remove id");
+    console.log(formData, "formdata");
 
+  }, [formData?.remove])
 
   const [apiDataDs, setApiDataDs] = useState([]);
   const fetchDataDs = async () => {
@@ -380,8 +494,8 @@ const UserUpdateForm = ({ id }) => {
                 value={formData.face_condition}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
-                placeholder="Tarif"
-                required
+                placeholder="Yuz holati haqida ma'lumot kiritilsin"
+              // required
               ></textarea>
             </div>
 
@@ -396,8 +510,8 @@ const UserUpdateForm = ({ id }) => {
                 value={formData.medications_taken}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
-                placeholder="Dori darmonlar ro'yhati"
-                required
+                placeholder="Qo'llaniladigan va qo'llanilgan dorilar haqida ma'lumot kiritilsin"
+              // required
               ></textarea>
             </div>
 
@@ -435,7 +549,7 @@ const UserUpdateForm = ({ id }) => {
                 onChange={handleChange}
                 className="input text-base-content input-bordered w-full"
                 placeholder="e.g., 150000.00"
-                required
+              // required
               />
             </div>
             {/* Home Care Items */}
@@ -449,11 +563,29 @@ const UserUpdateForm = ({ id }) => {
                 value={formData.home_care_items}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
-                placeholder=""
-                required
+                placeholder="Muolaja haqida ma'lumot kiritilsin"
+              // required
               ></textarea>
             </div>
-            <label className="label px-1 text-base-content font-medium mt-3">Ko'rik Vaqti</label>
+            {apiData?.appointments?.length > 0 && <label className="label px-1 text-base-content font-medium mt-3">Belgilangan ko'rik vaqtlari</label>}
+            {formData?.appointments?.map((appointment, index) => (
+              <div key={index} className="flex items-center gap-2 mb-2 ">
+                <input
+                  type="datetime-local"
+                  value={formatDateTime(formData?.appointments[index]?.appointment_time)}
+                  onChange={(e) => handleAppointmentChange(index, e.target.value)}
+                  className="input text-base-content input-bordered flex-1"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeAppointmentOld(index, formData?.appointments[index]?.id)}
+                  className="btn bg-[crimson]"
+                >
+                  <Trash2 size={20} className="text-white" />
+                </button>
+              </div>
+            ))}
+            <label className="label px-1 text-base-content font-medium mt-3">Ko'rik vaqti yangilash</label>
             {formData.new_appointments.map((appointment, index) => (
               <div key={index} className="flex items-center gap-2 mb-2 ">
                 <input
@@ -461,7 +593,6 @@ const UserUpdateForm = ({ id }) => {
                   value={formData?.new_appointments[index]?.appointment_time}
                   onChange={(e) => handleAppointmentChange(index, e.target.value)}
                   className="input text-base-content input-bordered flex-1"
-                  required
                 />
                 <button
                   type="button"
@@ -472,6 +603,7 @@ const UserUpdateForm = ({ id }) => {
                 </button>
               </div>
             ))}
+
             <button
               type="button"
               onClick={addAppointment}
@@ -485,7 +617,7 @@ const UserUpdateForm = ({ id }) => {
 
         {/* Submit Button */}
         <button type="submit" className="btn my-7 py-5 bg-[orange] text-white w-full"
-
+          onClick={dateControl}
         >
           Saqlash
         </button>

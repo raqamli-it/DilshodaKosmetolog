@@ -69,7 +69,7 @@ const Header = () => {
 
           <NotificationDropdown dropdownOpen={logoutSt} setDropdownOpen={setLogoutSt} />
 
-          <span className="px-5 text-sm font-bold text-base-content">Name family</span>
+          <span className="px-5 text-sm font-bold text-base-content">Dilshoda Kosmetolog</span>
           {/* <button className="size-8 overflow-hidden rounded-full">
             <img
               src="https://img.freepik.com/premium-photo/memoji-happy-man-white-background-emoji_826801-6839.jpg?ga=GA1.1.1242391120.1741867338&semt=ais_keywords_boost"

@@ -18,7 +18,7 @@ import UpdateUser from "./pages/UpdateUser";
 
 function App() {
   const { user, alReady, dispatch } = useContext(GlobalContext); // Login holatini olish
-  console.log(user, "bu user");
+  // console.log(user, "bu user");
 
   const routes = createBrowserRouter([
     {
@@ -63,4 +63,3 @@ function App() {
 }
 
 export default App;
-``

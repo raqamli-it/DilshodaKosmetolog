@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 
 
-const PaymentForm = ({ id }) => {
+const PaymentForm = ({ id, onClicks }) => {
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState(null);
@@ -35,12 +35,13 @@ const PaymentForm = ({ id }) => {
       const result = await response.json();
       setResponseMessage("To'lov muvaffaqiyatli amalga oshirildi!");
       toast.success("To'lov muvaffaqiyatli amalga oshirildi!");
+      onClicks(); // To'lov amalga oshirilgandan so'ng ma'lumotlarni yangilash
       setAmount("");
 
-      setTimeout(() => {
-        location.reload();
+      // setTimeout(() => {
+      //   location.reload();
 
-      }, 3000);
+      // }, 3000);
 
     } catch (error) {
       setResponseMessage("Xatolik yuz berdi. Qayta urinib ko'ring.");

@@ -7,7 +7,7 @@ import DangerZone from "./DangerZone";
 import PaymentForm from "../PaymentForm";
 import { toast } from "sonner";
 
-const UserHeader = ({ apiData }) => {
+const UserHeader = ({ apiData, onClicks }) => {
   const navigate = useNavigate()
   const formatDate = (dateString) => {
     const dateObject = new Date(dateString);
@@ -60,9 +60,10 @@ const UserHeader = ({ apiData }) => {
         toast.error("Bemor hali qarzdor");
       } else {
         toast.success("Status muvaffaqiyatli yangilandi!");
-        setTimeout(() => {
-          location.reload()
-        }, 3000);
+        onClicks(); // To'lov amalga oshirilgandan so'ng ma'lumotlarni yangilash
+        // setTimeout(() => {
+        //   location.reload()
+        // }, 3000);
       }
     } catch (error) {
       toast.error("Error updating status:", error);
@@ -133,7 +134,7 @@ const UserHeader = ({ apiData }) => {
                 <li className={`${apiData?.remaining_debt < 0 ? "text-red-500" : "text-base-content"} text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center gap-2 font-bold"> To'lanmagan qism:</span> {apiData?.remaining_debt} so'm</li>
 
               </ul>
-              <PaymentForm id={apiData?.id} />
+              <PaymentForm id={apiData?.id} onClicks={onClicks} />
 
             </div>
           </div>
@@ -144,7 +145,7 @@ const UserHeader = ({ apiData }) => {
             <div className="flex  gap-5 border border-base-300 bg-base-100 w-[400px] shadow-xl p-7 rounded-md text-base-content">
 
               <button
-                onClick={() => fetchData(apiData?.id)}
+                onClick={() => fetchData(apiData?.id)} // Yangilanishlar tugmasi bosilganda fetchData funksiyasini chaqirish
                 disabled={isLoading || apiData?.status == "treated"}
                 className={`px-4 py-2 bg-green-500 flex justify-center w-full h-12 text-white rounded hover:bg-green-600 ${apiData?.status == "treated" ? "opacity-50 cursor-not-allowed" : ""}`}
               >

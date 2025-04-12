@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bell, Phone } from 'lucide-react';
+import { Bell, Phone, User2 } from 'lucide-react';
 import { DataService } from "../config/DataService";
 import { endpoints } from "../config/endpoinds";
 import { Link, useNavigate } from "react-router-dom";
@@ -110,16 +110,19 @@ const NotificationDropdown = () => {
                   className="flex gap-6 items-center cursor-pointer  border-b border-base-100 p-3 px-4.5 py-3 "
                   onClick={() => navigate(`/details/${item?.id}`)}
                 >
-                  <span className="relative z-1 block h-10 bg-base-100 shadow-md w-full max-w-10 rounded-full">
+                  <span className="relative z-1 flex justify-center items-center h-10 bg-base-100  shadow-md w-full max-w-10 rounded-full">
                     {item?.photo ? (<img
                       src={item?.photo}
                       alt="User"
                       className="overflow-hidden h-full w-full object-cover rounded-full"
-                    />) : (<img
-                      src="https://randomuser.me/api/portraits/men/3.jpg"
-                      alt="User"
-                      className="overflow-hidden h-full w-full object-cover rounded-full"
-                    />)}
+                    />) : (
+                      <User2 className="overflow-hidden  object-cover text-base-content rounded-full" />
+                      // <img
+                      //   src="https://randomuser.me/api/portraits/men/3.jpg"
+                      //   alt="User"
+                      //   className="overflow-hidden h-full w-full object-cover rounded-full"
+                      // />
+                    )}
                   </span>
                   <span className="block">
                     <span className="text-theme-sm mb-1.5 block text-gray-500">

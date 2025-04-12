@@ -25,6 +25,13 @@ const UserFrom = () => {
   });
   const [images, setImages] = useState(null)
   const handleChange = (e) => {
+
+    const totalPayment = formData?.total_payment_due; // To'lov summasini olamiz
+
+    if (totalPayment && totalPayment.toString().length > 8) {
+      toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
+    }
+
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -57,6 +64,27 @@ const UserFrom = () => {
     const updatedAppointments = [...formData.appointments];
     updatedAppointments[index].appointment_time = value;
     setFormData((prev) => ({ ...prev, appointments: updatedAppointments }));
+
+    setFormData((prev) => ({
+      ...prev,
+      appointments: prev.appointments.filter((item) => {
+        // Bo'sh sanani o‘chiramiz
+        if (!item?.appointment_time || item?.appointment_time.trim() === "") {
+          toast.error("Sanani tanlash kerak!");
+          return false; // Massivdan olib tashlash
+        }
+
+        // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
+        const date = new Date(item.appointment_time);
+        const currentDate = new Date();
+        if (date < currentDate) {
+          toast.error("Vaqtni to'g'ri tanlang!");
+          // return false; // Massivdan olib tashlash
+        }
+
+        return true; // To'g'ri sanalar saqlanadi
+      }),
+    }));
   };
 
   const addAppointment = () => {
@@ -70,7 +98,44 @@ const UserFrom = () => {
     const updatedAppointments = formData.appointments.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, appointments: updatedAppointments }));
   };
+  const dateControl = () => {
+    if (formData?.region == "") {
+      setTimeout(() => {
+        toast.error("Viloyat tanlanmagan!");
+      }, 1000);
+    }
+    if (formData?.type_disease == "") {
+      setTimeout(() => {
+        toast.error("Kasallik turi tanlanmagan!");
+      }, 1000);
+    }
+    const totalPayment = formData?.total_payment_due;
+    if (totalPayment == 0 || totalPayment == "") {
+      setTimeout(() => {
+        toast.error("To'lov summasi kiritilmagan!");
+      }, 1000);
+    }
+    setFormData((prev) => ({
+      ...prev,
+      appointments: prev.appointments.filter((item) => {
+        // Bo'sh sanani o‘chiramiz
+        if (!item?.appointment_time || item?.appointment_time.trim() === "") {
+          toast.error("Sanani tanlash kerak!");
+          return false; // Massivdan olib tashlash
+        }
 
+        // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
+        const date = new Date(item.appointment_time);
+        const currentDate = new Date();
+        if (date < currentDate) {
+          toast.error("O'tgan vaqt tanlanmadi!");
+          return false; // Massivdan olib tashlash
+        }
+
+        return true; // To'g'ri sanalar saqlanadi
+      }),
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("authToken");
@@ -100,7 +165,7 @@ const UserFrom = () => {
 
       if (!response.ok) {
         toast.error("Har bir malumotni tekshiring, malumot to'liq bo'lmasligi mumkin !");
-        throw new Error("Yuborishda xatolik yuz berdi");
+        throw new Error("Saqlashda xatolik yuz berdi");
 
 
       }
@@ -316,7 +381,7 @@ const UserFrom = () => {
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder="Tarif"
-                required
+              // required
               ></textarea>
             </div>
 
@@ -332,7 +397,7 @@ const UserFrom = () => {
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder="Dori darmonlar ro'yhati"
-                required
+              // required
               ></textarea>
             </div>
 
@@ -385,7 +450,7 @@ const UserFrom = () => {
                 onChange={handleChange}
                 className="input text-base-content input-bordered w-full"
                 placeholder="e.g., 150000.00"
-                required
+              // required
               />
             </div>
             {/* Home Care Items */}
@@ -400,7 +465,7 @@ const UserFrom = () => {
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder=""
-                required
+              // required
               ></textarea>
             </div>
             <label className="label px-1 text-base-content font-medium mt-3">Ko'rik Vaqti</label>
@@ -411,7 +476,7 @@ const UserFrom = () => {
                   value={appointment.appointment_time}
                   onChange={(e) => handleAppointmentChange(index, e.target.value)}
                   className="input text-base-content input-bordered flex-1"
-                  required
+                // required
                 />
                 <button
                   type="button"
@@ -443,7 +508,7 @@ const UserFrom = () => {
 
         {/* Submit Button */}
         <button type="submit" className="btn my-7 py-5 bg-[orange] text-white w-full"
-
+          onClick={dateControl} // Sana tekshiruvi uchun
         >
           Saqlash
         </button>

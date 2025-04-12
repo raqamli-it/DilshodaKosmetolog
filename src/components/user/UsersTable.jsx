@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, ArrowDownRightSquare } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 const UsersTable = ({ apiData }) => {
   const navigate = useNavigate();
 
-  console.log(apiData, "bu global context",);
+  // console.log(apiData, "bu global context",);
 
 
   return (
@@ -101,7 +101,7 @@ const UsersTable = ({ apiData }) => {
 
                 <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
                   {/* <Link to={`/details`}> */}
-                  <button className='text-indigo-400 cursor-pointer hover:text-indigo-300' onClick={() => navigate(`/details/${user?.id}`)}>info</button>
+                  <button className='text-indigo-400 cursor-pointer hover:text-indigo-300' onClick={() => navigate(`/details/${user?.id}`)}><ArrowDownRightSquare size={18} /></button>
                   {/* </Link> */}
 
                 </td>

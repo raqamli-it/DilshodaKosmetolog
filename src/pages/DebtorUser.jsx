@@ -48,6 +48,11 @@ const DebtorUser = () => {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      if (error?.code === "token_not_valid") {
+        localStorage.removeItem('authToken'); // Tokenni o'chirish
+        sessionStorage.clear(); // sessionStorage'dagi barcha ma'lumotlarni o'chirish
+        window.location.href = '/login';
+      }
     } finally {
       setLoading(false); // Yuklanish jarayoni tugadi
     }
