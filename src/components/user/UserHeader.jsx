@@ -1,4 +1,4 @@
-import { User, MapPin, Phone, MapPinHouse, Activity, Stethoscope, CalendarFold, SquarePen, User2, Calendar } from "lucide-react";
+import { User, MapPin, Phone, MapPinHouse, Activity, Stethoscope, CalendarFold, SquarePen, User2, Calendar, Trash2 } from "lucide-react";
 import UserSection from "./UserSection";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -75,9 +75,49 @@ const UserHeader = ({ apiData, onClicks }) => {
 
 
 
+  function formatNumberWithoutCommas(number) {
+    return Number(number).toLocaleString('en-US').replace(/,/g, ' ');
+  }
+
+  // Misollar:
+  const handleDelete = async (payment_id) => {
+
+    const authToken = localStorage.getItem("authToken"); // Tokenni localStorage-dan olish
 
 
 
+    toast.promise(
+      new Promise((resolve, reject) => {
+        if (window.confirm("Haqiqatan ham to'langan summani o'chirishni xohlaysizmi?")) {
+          fetch(`https://dilshodakosmetolog.uz/monitoring/patients/${payment_id}/payments/${apiData?.id}/`, {
+            method: "DELETE",
+            headers: {
+              "accept": "application/json",
+              "Authorization": `Bearer ${authToken}`, // Auth tokenni yuborish
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                resolve("Foydalanuvchi o'chirildi!");
+                onClicks();
+              } else {
+                reject("Xatolik yuz berdi! Foydalanuvchi o'chirilmadi.");
+                resolve("Xatolik yuz berdi! Foydalanuvchi o'chirilmadi.");
+              }
+            })
+            .catch((error) => reject(error.message));
+
+        } else {
+          reject("Foydalanuvchini o'chirish bekor qilindi!");
+        }
+      }),
+      {
+        loading: "O'chirilmoqda...",
+        success: "Foydalanuvchi muvaffaqiyatli o'chirildi!",
+        error: () => "Xatolik yuz berdi!",
+      }
+    );
+  };
   return (
     <>
       {/* {isEditing ? ( */}
@@ -129,9 +169,21 @@ const UserHeader = ({ apiData, onClicks }) => {
               className="flex flex-col gap-5 border border-base-300 bg-base-100 w-[400px] shadow-xl p-7 rounded-md text-base-content">
 
               <ul>
-                <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> Umumiy miqdor:</span> {apiData?.total_payment_due} so'm</li>
-                <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> To'langan qism:</span> {apiData?.total_paid} so'm</li>
-                <li className={`${apiData?.remaining_debt < 0 ? "text-red-500" : "text-base-content"} text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center gap-2 font-bold"> To'lanmagan qism:</span> {apiData?.remaining_debt} so'm</li>
+                <li className="text-base-content flex items-center justify-between font-bold  gap-2"><span className="flex items-center gap-2 font-extrabold"> Umumiy miqdor:</span> {formatNumberWithoutCommas(apiData?.total_payment_due)} so'm</li>
+                <li className="text-base-content flex items-center justify-between  gap-2"><span className="flex items-center gap-2 font-bold"> To'langan qism:</span> {formatNumberWithoutCommas(apiData?.total_paid)} so'm</li>
+                <li className={`${apiData?.remaining_debt < 0 ? "text-red-500" : "text-base-content"} text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center gap-2 font-bold"> To'lanmagan qism:</span> {formatNumberWithoutCommas(apiData?.remaining_debt)} so'm</li>
+                <li className="mt-3">
+                  {apiData?.payments?.length > 0 && <h2 className="text-base-content font-semibold text-lg">To'lovlar tarixi</h2>}
+                  {
+
+                    apiData?.payments?.map((item) =>
+                      <li className={`text-base-content flex items-center justify-between  gap-2`}><span className="flex items-center  gap-2">{formatNumberWithoutCommas(item?.amount)} so'm</span>  <span className="cursor-pointer text-red-600 rounded
+      transition duration-200" onClick={() => { handleDelete(item?.id) }}>
+                        <Trash2 className='text-red-500' size={18} />
+                      </span> </li>
+
+                    )
+                  }</li>
 
               </ul>
               <PaymentForm id={apiData?.id} onClicks={onClicks} />
@@ -147,11 +199,11 @@ const UserHeader = ({ apiData, onClicks }) => {
               <button
                 onClick={() => fetchData(apiData?.id)} // Yangilanishlar tugmasi bosilganda fetchData funksiyasini chaqirish
                 disabled={isLoading || apiData?.status == "treated"}
-                className={`px-4 py-2 bg-green-500 flex justify-center w-full h-12 text-white rounded hover:bg-green-600 ${apiData?.status == "treated" ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`px-4 py-2 bg-green-500 cursor-pointer flex justify-center w-full h-12 text-white rounded hover:bg-green-600 ${apiData?.status == "treated" ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 {isLoading ? (<div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>) : "Davolangan"}
               </button>
-              <button className="px-4 py-2 w-full h-12 bg-indigo-500 flex justify-center items-center text-white rounded hover:bg-indigo-600"
+              <button className="cursor-pointer px-4 py-2 w-full h-12 bg-indigo-500 flex justify-center items-center text-white rounded hover:bg-indigo-600"
                 onClick={() => navigate(`/update_user/${apiData?.id}`)}
               >  <SquarePen size={20} /></button>
             </div>

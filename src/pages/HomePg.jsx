@@ -15,14 +15,11 @@ const HomePage = () => {
   const [apiDataSt, setApiDataSt] = useState();
   const fetchDataSt = async () => {
     const response = await DataService.get(endpoints.statistic)
-    console.log(response, "statistic");
     setApiDataSt(response);
-    // console.log(response?.results);
 
   };
   useEffect(() => {
     fetchDataSt();
-    // console.log(apiDataSt, "statistic useEffect");
 
   }, []);
   const [apiData, setApiData] = useState([]); // API dan kelgan data
@@ -34,25 +31,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false); // Yuklanish holati
   const [searchCompleted, setSearchCompleted] = useState(false); // Qidiruv tugallanganligi haqida belgi
 
-  // API'dan ma'lumotlarni olish
-  // const fetchData = async (searchQuery = "") => {
-  //   setLoading(true); // Loaderni ko'rsatish
-  //   setSearchCompleted(false); // Qidiruv jarayoni boshlandi
-  //   try {
-  //     const endpoint = searchQuery
-  //       ? `${endpoints.all}?search=${searchQuery}` // Qidiruv uchun API
-  //       : endpoints.all; // Umumiy ma'lumot uchun API
-  //     const response = await DataService.get(endpoint);
-  //     setApiData(response?.results || []); // Natijalarni saqlash
-  //     console.log(response, "all data");
 
-  //     setSearchCompleted(true); // Qidiruv tugadi
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setTimeout(() => setLoading(false), 800); // Loader vaqtini cho'zish
-  //   }
-  // };
   const fetchData = async (searchQuery = "", page = 1) => {
     setLoading(true); // Yuklanish holati
     setSearchCompleted(false); // Qidiruv jarayoni boshlandi
@@ -76,10 +55,6 @@ const HomePage = () => {
         // Faqat key "currentPageAc" va "searchTermAc" bo'lmasa o'chirish
         if (key !== "currentPage" && key !== "searchTerm") {
           sessionStorage.removeItem(key); // sessionStorage'dan kalitni o'chirish
-          console.log(`${key} o'chirildi.`);
-        } else {
-          const value = sessionStorage.getItem(key); // Kalitning qiymatini olish
-          console.log(`Saqlangan kalit nomi: ${key}, Qiymati: ${value}`);
         }
       }
 
@@ -94,8 +69,6 @@ const HomePage = () => {
       // navigate("/login"); // Agar xato bo'lsa, login sahifasiga o'tish
     } finally {
       setLoading(false); // Yuklanish jarayoni tugadi
-      console.log("loading", response?.message);
-
     }
   };
   // Boshlang'ich ma'lumotlarni olish
@@ -112,10 +85,6 @@ const HomePage = () => {
       // Faqat key "currentPageAc" va "searchTermAc" bo'lmasa o'chirish
       if (key !== "currentPage" && key !== "searchTerm") {
         sessionStorage.removeItem(key); // sessionStorage'dan kalitni o'chirish
-        console.log(`${key} o'chirildi.`);
-      } else {
-        const value = sessionStorage.getItem(key); // Kalitning qiymatini olish
-        console.log(`Saqlangan kalit nomi: ${key}, Qiymati: ${value}`);
       }
     }
     setCurrentPage(savedPage);

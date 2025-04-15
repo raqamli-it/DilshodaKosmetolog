@@ -15,9 +15,7 @@ const UserProfile = () => {
   const [apiData, setApiData] = useState([]);
   const fetchData = async () => {
     const response = await DataService.get(endpoints.patientByid(route?.id));
-    console.log(response, "havolalar user details");
     setApiData(response);
-    // console.log(response?.results);
   };
   useEffect(() => {
     fetchData();

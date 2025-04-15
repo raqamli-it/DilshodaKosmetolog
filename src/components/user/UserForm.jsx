@@ -47,7 +47,6 @@ const UserFrom = () => {
       // Faylni o'qish jarayonida nimani qilish kerakligini aniqlash
       reader.onload = () => {
         const base64String = reader.result.split(",")[1]; // Base64 stringni olish
-        console.log("Base64 format:", base64String);
 
         // Base64ni formData ga qo'shish
         setFormData((prev) => ({ ...prev, photo: base64String }));

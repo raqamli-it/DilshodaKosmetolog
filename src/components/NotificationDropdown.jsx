@@ -27,7 +27,6 @@ const NotificationDropdown = () => {
   const [apiDataIn, setApiDataIn] = useState([]);
   const fetchDataIn = async () => {
     const response = await DataService.get(endpoints.userCountNs);
-    console.log(response, "Notifif list");
     setApiDataIn(response);
 
   };

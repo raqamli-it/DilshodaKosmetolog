@@ -47,8 +47,8 @@ const DeleteBtn = ({ userId }) => {
   return (
     <>
 
-      <button className="btn-ghost bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded
-      transition duration-200" onClick={handleDelete}>
+      <button className="cursor-pointer btn-ghost bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded
+        transition duration-200" onClick={handleDelete}>
         <Trash2 className='text-white' size={24} />
       </button>
     </>

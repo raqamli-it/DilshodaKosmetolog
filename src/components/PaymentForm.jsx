@@ -52,6 +52,7 @@ const PaymentForm = ({ id, onClicks }) => {
   };
 
 
+
   return (
     <div>
 

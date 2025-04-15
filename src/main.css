@@ -155,3 +155,38 @@
 .custom-capitalized::first-letter {
   text-transform: uppercase;
 }
+
+.overscrolls {
+  overflow-y: auto;
+  scrollbar-width: auto; /* Firefox uchun */
+  -ms-overflow-style: auto; /* Internet Explorer uchun */
+}
+
+::-webkit-scrollbar {
+  display: block; /* Scroll barni ko‘rsatadi */
+}
+
+/* Scroll bar uchun stil */
+.overscrolls {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f100; /* Thumb rangi va track foni */
+}
+
+.overscrolls::-webkit-scrollbar {
+  width: 2px; /* Vertikal scroll bar kengligi */
+  height: 2px; /* Gorizontal scroll bar balandligi */
+}
+
+.overscrolls::-webkit-scrollbar-track {
+  background: #f1f1f100; /* Track foni */
+  border-radius: 10px; /* Burchaklarni yumaloqlash */
+}
+
+.overscrolls::-webkit-scrollbar-thumb {
+  background: #888; /* Thumb rangi */
+  border-radius: 10px; /* Burchaklarni yumaloqlash */
+}
+
+.overscrolls::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Hover'da rangi o‘zgaradi */
+}

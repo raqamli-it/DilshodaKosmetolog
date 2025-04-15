@@ -42,10 +42,6 @@ const RecovredUser = () => {
         // Faqat key "currentPageAc" va "searchTermAc" bo'lmasa o'chirish
         if (key !== "currentPageRe" && key !== "searchTermRe") {
           sessionStorage.removeItem(key); // sessionStorage'dan kalitni o'chirish
-          console.log(`${key} o'chirildi.`);
-        } else {
-          const value = sessionStorage.getItem(key); // Kalitning qiymatini olish
-          console.log(`Saqlangan kalit nomi: ${key}, Qiymati: ${value}`);
         }
       }
     } catch (error) {
@@ -70,10 +66,6 @@ const RecovredUser = () => {
       // Faqat key "currentPageAc" va "searchTermAc" bo'lmasa o'chirish
       if (key !== "currentPageRe" && key !== "searchTermRe") {
         sessionStorage.removeItem(key); // sessionStorage'dan kalitni o'chirish
-        console.log(`${key} o'chirildi.`);
-      } else {
-        const value = sessionStorage.getItem(key); // Kalitning qiymatini olish
-        console.log(`Saqlangan kalit nomi: ${key}, Qiymati: ${value}`);
       }
     }
     setCurrentPage(savedPage);

@@ -25,20 +25,15 @@ const UserUpdateForm = ({ id }) => {
     total_payment_due: apiData?.total_payment_due,
     photo: "",
     remove: [],
-    new_appointments: [{ appointment_time: "" }],
+    new_appointments: [],
     appointments: apiData?.appointments
 
 
   });
   const fetchData = async () => {
     const response = await DataService.get(endpoints.patientByid(id));
-    console.log(response, "havolalar user details update");
     setApiData(response);
-    console.log(response?.photo, "update");
-    // response?.appointments?.forEach((item) => {
-    //   console.log(response?.appointments[0].appointment_time, "update");
 
-    // })
   };
 
   const FetchPhotoFomat = async () => {
@@ -52,7 +47,6 @@ const UserUpdateForm = ({ id }) => {
           reader.readAsDataURL(blob); // Blob'ni base64 ga aylantirish
           reader.onloadend = () => {
             resolve(reader.result)
-            // console.log("Base64 format:", reader.result);
             setFormData((prev) => ({ ...prev, photo: reader.result })); // Base64 formatni qaytarish
           }; // Base64 formatni qaytarish
           reader.onerror = reject; // Agar xato bo'lsa
@@ -61,11 +55,7 @@ const UserUpdateForm = ({ id }) => {
         console.error('Xatolik yuz berdi:', error);
       }
 
-      // Misol foydalanish
-      // (async () => {
-      //   const base64Image = await urlToBase64('https://your-image-url.com/image.jpg');
-      //   // console.log('Base64 format:', base64Image);
-      // })();
+
 
     }
   }
@@ -85,7 +75,7 @@ const UserUpdateForm = ({ id }) => {
       photo: "",
       remove: [],
 
-      new_appointments: [{ appointment_time: "" }],
+      new_appointments: [],
       appointments: apiData?.appointments
 
 
@@ -110,7 +100,7 @@ const UserUpdateForm = ({ id }) => {
         total_payment_due: apiData.total_payment_due || 0,
         photo: "",
         remove: [],
-        new_appointments: [{ appointment_time: "" }],
+        new_appointments: [],
         appointments: apiData?.appointments,
 
 
@@ -153,7 +143,6 @@ const UserUpdateForm = ({ id }) => {
       // Faylni o'qish jarayonida nimani qilish kerakligini aniqlash
       reader.onload = () => {
         const base64String = reader.result.split(",")[1]; // Base64 stringni olish
-        console.log("Base64 format:", base64String);
 
         // Base64ni formData ga qo'shish
         setFormData((prev) => ({ ...prev, photo: base64String }));
@@ -200,16 +189,6 @@ const UserUpdateForm = ({ id }) => {
     const updatedAppointments = formData.new_appointments.filter((_, i) => i !== index);
     setFormData((prev) => ({ ...prev, new_appointments: updatedAppointments }));
   };
-  // const removeAppointmentOld = (index, id) => {
-  //   // Massivni prevState asosida yangilash
-
-
-  //   // Appointmentsni yangilash
-  //   const updatedAppointments = apiData.appointments.filter((_, i) => i !== index);
-  //   setApiData((prev) => ({ ...prev, appointments: updatedAppointments }));
-  //   console.log(formData?.remove, "remove id");
-
-  // };
 
   const removeAppointmentOld = (index) => {
     const updatedAppointments = [...formData?.appointments];
@@ -284,7 +263,6 @@ const UserUpdateForm = ({ id }) => {
 
       const result = await response.json();
       toast.success("Ma'lumot muvaffaqiyatli yuborildi!");
-      console.log(result, "result update user");
 
       navigate(`/details/${id}`)
 
@@ -312,7 +290,7 @@ const UserUpdateForm = ({ id }) => {
       home_care_items: apiData?.home_care_items,
       total_payment_due: apiData?.total_payment_due,
       photo: "",
-      new_appointments: [{ appointment_time: "" }],
+      new_appointments: [],
       appointments: apiData?.appointments,
       remove: [],
 
@@ -324,17 +302,12 @@ const UserUpdateForm = ({ id }) => {
 
   }, [id]);
 
-  useEffect(() => {
-    console.log(formData?.remove, "remove id");
-    console.log(formData, "formdata");
 
-  }, [formData?.remove])
 
   const [apiDataDs, setApiDataDs] = useState([]);
   const fetchDataDs = async () => {
     const response = await DataService.get(endpoints.diseases);
     setApiDataDs(response);
-    // console.log(response?.results);
 
   };
   useEffect(() => {
@@ -394,7 +367,7 @@ const UserUpdateForm = ({ id }) => {
                     type="text"
                     id="full_name"
                     name="full_name"
-                    value={formData.full_name}
+                    value={formData.full_name || ""}
                     onChange={handleChange}
                     className="input text-base-content input-bordered w-full"
                     placeholder="Ism Familya"
@@ -410,7 +383,7 @@ const UserUpdateForm = ({ id }) => {
                     type="tel"
                     id="phone_number"
                     name="phone_number"
-                    value={formData.phone_number}
+                    value={formData.phone_number || ""}
                     onChange={handleChange}
                     className="input text-base-content input-bordered w-full"
                     placeholder="+998901234567"
@@ -439,7 +412,7 @@ const UserUpdateForm = ({ id }) => {
                 </button>
 
                 {boolens.region && <div className="absolute z-50 right-0 mt-2 w-56 rounded-md shadow-lg bg-base-100  border border-gray-600">
-                  <div className="py-1 min-h-30">
+                  <div className="py-1 min-h-30 max-h-40 overflow-y-auto overscrolls">
                     {apiDataIn?.map((item, index) => (
                       <a
                         key={index}
@@ -465,7 +438,7 @@ const UserUpdateForm = ({ id }) => {
                 </button>
 
                 {boolens.type && <div className="absolute z-50 right-0 mt-2 w-56 rounded-md shadow-lg bg-base-100  border border-gray-600">
-                  <div className="py-1 min-h-30">
+                  <div className="py-1 min-h-30 max-h-40 overflow-y-auto overscrolls">
                     {apiDataDs?.map((item, index) => (
                       <a
                         key={item?.id}
@@ -491,7 +464,7 @@ const UserUpdateForm = ({ id }) => {
               <textarea
                 id="face_condition"
                 name="face_condition"
-                value={formData.face_condition}
+                value={formData.face_condition || ""}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder="Yuz holati haqida ma'lumot kiritilsin"
@@ -507,7 +480,7 @@ const UserUpdateForm = ({ id }) => {
               <textarea
                 id="medications_taken"
                 name="medications_taken"
-                value={formData.medications_taken}
+                value={formData.medications_taken || ""}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder="Qo'llaniladigan va qo'llanilgan dorilar haqida ma'lumot kiritilsin"
@@ -529,7 +502,7 @@ const UserUpdateForm = ({ id }) => {
                 type="text"
                 id="address"
                 name="address"
-                value={formData.address}
+                value={formData.address || ""}
                 onChange={handleChange}
                 className="input text-base-content input-bordered w-full"
                 placeholder="Yashash manzili"
@@ -545,7 +518,7 @@ const UserUpdateForm = ({ id }) => {
                 type="number"
                 id="total_payment_due"
                 name="total_payment_due"
-                value={formData.total_payment_due}
+                value={formData.total_payment_due || ""}
                 onChange={handleChange}
                 className="input text-base-content input-bordered w-full"
                 placeholder="e.g., 150000.00"
@@ -560,7 +533,7 @@ const UserUpdateForm = ({ id }) => {
               <textarea
                 id="home_care_items"
                 name="home_care_items"
-                value={formData.home_care_items}
+                value={formData.home_care_items || ""}
                 onChange={handleChange}
                 className="textarea text-base-content textarea-bordered w-full"
                 placeholder="Muolaja haqida ma'lumot kiritilsin"
@@ -572,7 +545,7 @@ const UserUpdateForm = ({ id }) => {
               <div key={index} className="flex items-center gap-2 mb-2 ">
                 <input
                   type="datetime-local"
-                  value={formatDateTime(formData?.appointments[index]?.appointment_time)}
+                  value={formatDateTime(formData?.appointments[index]?.appointment_time) || ""}
                   onChange={(e) => handleAppointmentChange(index, e.target.value)}
                   className="input text-base-content input-bordered flex-1"
                 />
@@ -590,7 +563,7 @@ const UserUpdateForm = ({ id }) => {
               <div key={index} className="flex items-center gap-2 mb-2 ">
                 <input
                   type="datetime-local"
-                  value={formData?.new_appointments[index]?.appointment_time}
+                  value={formData?.new_appointments[index]?.appointment_time || ""}
                   onChange={(e) => handleAppointmentChange(index, e.target.value)}
                   className="input text-base-content input-bordered flex-1"
                 />
@@ -607,7 +580,7 @@ const UserUpdateForm = ({ id }) => {
             <button
               type="button"
               onClick={addAppointment}
-              className="btn bg-green-500 text-white btn-sm"
+              className="btn bg-green-500 text-white btn-sm block mt-2"
             >
               Sana qo'shish
             </button>

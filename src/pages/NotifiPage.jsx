@@ -14,9 +14,7 @@ export default function NotifiPage() {
 
   const fetchData = async () => {
     const response = await DataService.get(endpoints.userCountNs);
-    console.log(response, "Notifif list");
     setApiData(response);
-    // console.log(response?.results);
     setLoading(false);
 
   };

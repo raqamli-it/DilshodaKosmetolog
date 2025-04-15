@@ -46,7 +46,6 @@ export default function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Login muvaffaqiyatli:", data?.access);
         dispatch({ type: "LOGIN", payload: data?.access })// Tokenni localStorage ga saqlash
         localStorage.setItem("authToken", data?.access); // Tokenni localStorage ga saqlash
         localStorage.setItem("authTokenRf", data?.refresh); // Tokenni localStorage ga saqlash

@@ -31,7 +31,8 @@ const UsersTable = ({ apiData }) => {
 
               <th className='px-6 py-3 text-left text-xs font-medium text-base-content uppercase tracking-wider'>
                 Tasnifi
-              </th> <th className='px-6 py-3 text-left text-xs font-medium text-base-content uppercase tracking-wider'>
+              </th>
+              <th className='px-6 py-3 text-left text-xs font-medium text-base-content uppercase tracking-wider'>
                 Telefon
               </th>
               <th className='px-6 py-3 text-left text-xs font-medium text-base-content uppercase tracking-wider'>
