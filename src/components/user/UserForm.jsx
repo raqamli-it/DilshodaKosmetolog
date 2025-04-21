@@ -26,11 +26,11 @@ const UserFrom = () => {
   const [images, setImages] = useState(null)
   const handleChange = (e) => {
 
-    const totalPayment = formData?.total_payment_due; // To'lov summasini olamiz
+    // const totalPayment = formData?.total_payment_due; // To'lov summasini olamiz
 
-    if (totalPayment && totalPayment.toString().length > 8) {
-      toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
-    }
+    // if (totalPayment && totalPayment.toString().length > 8) {
+    //   toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
+    // }
 
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -108,12 +108,12 @@ const UserFrom = () => {
         toast.error("Kasallik turi tanlanmagan!");
       }, 1000);
     }
-    const totalPayment = formData?.total_payment_due;
-    if (totalPayment == 0 || totalPayment == "") {
-      setTimeout(() => {
-        toast.error("To'lov summasi kiritilmagan!");
-      }, 1000);
-    }
+    // const totalPayment = formData?.total_payment_due;
+    // if (totalPayment == 0 || totalPayment == "") {
+    //   setTimeout(() => {
+    //     toast.error("To'lov summasi kiritilmagan!");
+    //   }, 1000);
+    // }
     setFormData((prev) => ({
       ...prev,
       appointments: prev.appointments.filter((item) => {

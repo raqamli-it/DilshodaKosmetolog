@@ -708,10 +708,10 @@ const UserUpdateForm = ({ id }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "total_payment_due" && value.length > 8) {
-      toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
-      return;
-    }
+    // if (name === "total_payment_due" && value.length > 8) {
+    //   toast.error("To'lov summasi 8 xonadan oshmasligi kerak!");
+    //   return;
+    // }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
