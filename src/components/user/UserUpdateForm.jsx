@@ -638,6 +638,8 @@ const UserUpdateForm = ({ id }) => {
     try {
       const response = await DataService.get(endpoints.patientByid(id));
       setApiData(response);
+      console.log(response, "response apiData ");
+
     } catch (error) {
       console.error("API ma'lumotni olishda xatolik:", error);
     }
@@ -1021,15 +1023,16 @@ const UserUpdateForm = ({ id }) => {
               <label htmlFor="total_payment_due" className="label px-1 text-base-content font-medium">
                 To'lov Summasi
               </label>
+
               <input
                 type="number"
-                id="total_payment_due"
                 name="total_payment_due"
-                value={formData.total_payment_due || ""}
+                // value={formData.total_payment_due}
+                value={parseInt(formData.total_payment_due.toString().split('.')[0])}
+
                 onChange={handleChange}
                 className="input text-base-content input-bordered w-full"
-                placeholder="e.g., 150000.00"
-              // required
+                placeholder="To'lanadigan summa"
               />
             </div>
             {/* Home Care Items */}
