@@ -1,10 +1,12 @@
-import { User, MapPin, Phone, MapPinHouse, Activity, Stethoscope, CalendarFold, SquarePen, User2, Calendar, Trash2 } from "lucide-react";
+import { User, MapPin, Phone, MapPinHouse, Activity, Stethoscope, CalendarFold, SquarePen, User2, Calendar, Trash2,FileText } from "lucide-react";
 import UserSection from "./UserSection";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import DangerZone from "./DangerZone";
 import PaymentForm from "../PaymentForm";
+
 import { toast } from "sonner";
 
 const UserHeader = ({ apiData, onClicks }) => {
@@ -118,6 +120,77 @@ const UserHeader = ({ apiData, onClicks }) => {
       }
     );
   };
+
+  // const generatePDF = () => {
+  //   if (!apiData) return;
+
+  //   const doc = new jsPDF();
+
+  //   const data = {
+  //     "F.I.Sh.": apiData.full_name,
+  //     "Telefon raqami": apiData.phone_number,
+  //     "Manzil": apiData.address,
+  //     "Yuz holati": apiData.face_condition,
+  //     "Uyda parvarish": apiData.home_care_items,
+  //     "Dori vositalari": apiData.medications_taken,
+  //     "To'lov holati": apiData.status,
+  //     "To'lov summasi": apiData.total_payment_due,
+  //     "To'langan": apiData.total_paid,
+  //     "Qolgan qarz": apiData.remaining_debt,
+  //     "Hudud": apiData.region?.name,
+  //     "Kasallik turi": apiData.type_disease?.name,
+  //     "Yaratilgan vaqt":  formatDate(apiData.created_at),
+  //   };
+
+  //   let y = 10;
+  //   for (const key in data) {
+  //     if (data.hasOwnProperty(key)) {
+  //       doc.text(`${key}: ${data[key]}`, 10, y);
+  //       y += 10;
+  //     }
+  //   }
+
+  //   doc.save(`${data["F.I.Sh."]}ning bemorlik-malumotlari.pdf`);
+  // };
+  const generatePDF = () => {
+    if (!apiData) return;
+
+    const doc = new jsPDF();
+
+    // PDF sarlavha
+    doc.text("Bemor Ma'lumotlari", 14, 15);
+
+    // Jadval uchun ustun va qiymatlarni juft qilib tayyorlash
+    const rows = [
+      ["F.I.Sh.", apiData.full_name],
+      ["Telefon raqami", apiData.phone_number],
+      ["Manzil", apiData.address],
+      ["Yuz holati", apiData.face_condition],
+      ["Uyda parvarish", apiData.home_care_items],
+      ["Dori vositalari", apiData.medications_taken],
+      ["To'lov holati", apiData.status],
+      ["To'lov summasi", `${apiData.total_payment_due} so'm`],
+      ["To'langan", `${apiData.total_paid} so'm`],
+      ["Qolgan qarz", `${apiData.remaining_debt} so'm`],
+      ["Hudud", apiData.region?.name],
+      ["Kasallik turi", apiData.type_disease?.name],
+      ["Yaratilgan vaqt", formatDate(apiData.created_at)],
+    ];
+
+    // Jadvalni chizish
+    autoTable(doc, {
+      startY: 20,
+      head: [["Nomi", "Qiymat"]],
+      body: rows,
+      styles: { fontSize: 10, cellPadding: 3 },
+      columnStyles: {
+        0: { cellWidth: 40 },   // sarlavhalar
+        
+      },
+    });
+
+    doc.save(`${apiData?.full_name}ning bemorlik varaqasi.pdf`);
+  };
   return (
     <>
       {/* {isEditing ? ( */}
@@ -187,10 +260,11 @@ const UserHeader = ({ apiData, onClicks }) => {
 
               </ul>
               <PaymentForm id={apiData?.id} onClicks={onClicks} />
+              
 
             </div>
           </div>
-
+\
 
           <div>
             <h2 className="text-base-content font-semibold text-lg">Yangilanishlar</h2>
@@ -208,7 +282,16 @@ const UserHeader = ({ apiData, onClicks }) => {
               >  <SquarePen size={20} /></button>
             </div>
           </div>
+          <div>
+            <h2 className="text-base-content font-semibold text-lg">Bemorning  malumotlarni olish</h2>
+            <div className="flex  gap-5 border border-base-300 bg-base-100 w-[400px] shadow-xl p-7 rounded-md text-base-content">
 
+              
+              <button className="cursor-pointer px-4 py-2 w-full h-12 bg-indigo-500 flex justify-center items-center text-white rounded hover:bg-indigo-600"
+               onClick={generatePDF}
+              >  <FileText size={20} className="mx-3"/>  PDF Yuklab olish</button>
+            </div>
+          </div>
           <div >
             {apiData?.is_superuser && < DangerZone apiData={apiData} />}
           </div>
