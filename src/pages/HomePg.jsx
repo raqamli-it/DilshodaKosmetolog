@@ -1,4 +1,4 @@
-import { UserCheck, UserPlus, UsersIcon, UserRound, UserMinus, Search, ArrowDownRightSquare } from "lucide-react";
+import { UserCheck, UserPlus, UsersIcon, UserRound, UserMinus, Search, ArrowDownRightSquare, FileText } from "lucide-react";
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { endpoints } from "../config/endpoinds";
 import { DataService } from "../config/DataService";
 import UsersTable from "../components/user/UsersTable";
 import { useNavigate } from "react-router-dom";
+import PdfDw from "../components/PdfDw";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -122,6 +123,10 @@ const HomePage = () => {
     fetchData(value, 1); // Qidiruv bilan birinchi sahifa uchun API chaqiriladi
 
   };
+
+
+
+
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Products" />
@@ -159,19 +164,27 @@ const HomePage = () => {
           transition={{ delay: 0.2 }}
         >
           <div className="flex justify-between items-center mb-6 px-6">
-            <Bredcamp title={"Mijozlar"} />
-            <div className="relative">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Search users..."
-                className="text-base-content bg-base-100 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <Search
-                className="absolute left-3 top-2.5 text-gray-400"
-                size={18}
-              />
+            <div className="flex items-center gap-2">
+              <Bredcamp title={"Mijozlar"} />
+
+            </div>
+            <div className="flex items-center gap-6">
+              <PdfDw apiData={apiData} />
+              <div className="relative">
+
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  placeholder="Search users..."
+                  className="text-base-content bg-base-100 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <Search
+                  className="absolute left-3 top-2.5 text-gray-400"
+                  size={18}
+                />
+              </div>
+
             </div>
           </div>
           {/* Table */}

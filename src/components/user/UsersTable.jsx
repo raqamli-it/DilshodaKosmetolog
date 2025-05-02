@@ -1,14 +1,15 @@
-import { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { Search, ArrowDownRightSquare } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowDownRightSquare } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 
 
 const UsersTable = ({ apiData }) => {
   const navigate = useNavigate();
 
-  // console.log(apiData, "bu global context",);
+  console.log(apiData, "bu global context",);
+
 
 
   return (
@@ -111,6 +112,7 @@ const UsersTable = ({ apiData }) => {
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
