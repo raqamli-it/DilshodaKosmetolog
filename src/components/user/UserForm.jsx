@@ -74,12 +74,12 @@ const UserFrom = () => {
         }
 
         // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
-        const date = new Date(item.appointment_time);
-        const currentDate = new Date();
-        if (date < currentDate) {
-          toast.error("Vaqtni to'g'ri tanlang!");
-          // return false; // Massivdan olib tashlash
-        }
+        // const date = new Date(item.appointment_time);
+        // const currentDate = new Date();
+        // if (date < currentDate) {
+        //   toast.error("Vaqtni to'g'ri tanlang!");
+        //   // return false; // Massivdan olib tashlash
+        // }
 
         return true; // To'g'ri sanalar saqlanadi
       }),
@@ -124,12 +124,12 @@ const UserFrom = () => {
         }
 
         // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
-        const date = new Date(item.appointment_time);
-        const currentDate = new Date();
-        if (date < currentDate) {
-          toast.error("O'tgan vaqt tanlanmadi!");
-          return false; // Massivdan olib tashlash
-        }
+        // const date = new Date(item.appointment_time);
+        // const currentDate = new Date();
+        // if (date < currentDate) {
+        //   toast.error("O'tgan vaqt tanlanmadi!");
+        //   return false; // Massivdan olib tashlash
+        // }
 
         return true; // To'g'ri sanalar saqlanadi
       }),

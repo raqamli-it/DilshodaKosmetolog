@@ -742,12 +742,12 @@ const UserUpdateForm = ({ id }) => {
 
 
         // Tanlangan sana o'tmishda bo'lsa, xatolik chiqaramiz
-        const date = new Date(item.appointment_time);
-        const currentDate = new Date();
-        if (date < currentDate) {
-          toast.error("Vaqtni to'g'ri tanlang!");
-          // Massivdan olib tashlash
-        }
+        // const date = new Date(item.appointment_time);
+        // const currentDate = new Date();
+        // if (date < currentDate) {
+        //   toast.error("Vaqtni to'g'ri tanlang!");
+        //   // Massivdan olib tashlash
+        // }
 
         return true; // To'g'ri sanalar saqlanadi
       }),
@@ -784,12 +784,12 @@ const UserUpdateForm = ({ id }) => {
           toast.error("Sanani tanlash kerak!");
           return false;
         }
-        const date = new Date(item.appointment_time);
-        const currentDate = new Date();
-        if (date < currentDate) {
-          toast.error("Vaqtni to'g'ri tanlang!");
-          return false;
-        }
+        // const date = new Date(item.appointment_time);
+        // const currentDate = new Date();
+        // if (date < currentDate) {
+        //   toast.error("Vaqtni to'g'ri tanlang!");
+        //   return false;
+        // }
         return true;
       })
     }));
